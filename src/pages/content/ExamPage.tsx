@@ -7,11 +7,10 @@ import {
     ErrorMessage,
     QuestionCard,
     ExamTimer,
-    ExamProgress,
     ExamResults
 } from '../../components';
 import { calculateExamResult, minutesToSeconds } from '../../utils';
-import CameraCanvas from '../../components/exam/CameraCanvas';
+
 import CameraCaptureWebSocket from '../../components/common/CameraCaptureWebSocket';
 
 const ExamPage: React.FC = () => {
@@ -198,36 +197,6 @@ const ExamPage: React.FC = () => {
 
                             <CameraCaptureWebSocket />
                         </div>
-                        {/* Camera Component */}
-                        {/* <div className="flex flex-col items-center space-y-2">
-                            <CameraCanvas
-                                size={120}
-                                onCameraReady={(stream) => {
-                                    console.log('Camera ready for exam monitoring:', stream);
-                                    setCameraStream(stream);
-                                    setCameraError(null);
-                                }}
-                                onError={(error) => {
-                                    console.error('Camera error during exam:', error);
-                                    setCameraError(error);
-                                    setCameraStream(null);
-                                }}
-                                onCameraStopped={() => {
-                                    console.log('Camera stopped by user');
-                                    setCameraStream(null);
-                                    setCameraError(null);
-                                }}
-                            />
-                            <span className="text-xs text-gray-500 text-center">
-                                {cameraError ? 'Camera Unavailable' : 'Exam Monitoring'}
-                            </span>
-                            {cameraError && (
-                                <span className="text-xs text-red-500 text-center max-w-[120px]">
-                                    {cameraError}
-                                </span>
-                            )}
-                        </div> */}
-
                         {/* Timer */}
                         {exam.timeLimit && (
                             <ExamTimer
@@ -239,13 +208,6 @@ const ExamPage: React.FC = () => {
                     </div>
                 </div>
             </div>
-
-            {/* Progress Bar */}
-            <ExamProgress
-                current={currentQuestionIndex + 1}
-                total={exam.questions.length}
-                answered={answers.size}
-            />
 
             {/* Question */}
             <QuestionCard
