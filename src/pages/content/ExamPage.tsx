@@ -12,6 +12,8 @@ import {
 import { calculateExamResult, minutesToSeconds } from '../../utils';
 
 import CameraCaptureWebSocket from '../../components/common/CameraCaptureWebSocket';
+import AlertDashboard from '../../components/monitoring/AlertDashboard';
+import type { SuspiciousAlert } from '../../types/alerts';
 
 const ExamPage: React.FC = () => {
     const { examId } = useParams<{ examId: string }>();
@@ -26,7 +28,8 @@ const ExamPage: React.FC = () => {
     const [examResult, setExamResult] = useState<LocalExamResult | null>(null);
     const [timeRemaining, setTimeRemaining] = useState<number>(0);
     const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
-    const [cameraError, setCameraError] = useState<string | null>(null);
+    const [suspiciousActivities, setSuspiciousActivities] = useState<SuspiciousAlert[]>([]);
+    const [showAlertDashboard, setShowAlertDashboard] = useState(false);
 
     // Fetch exam data from API or use mock data
     useEffect(() => {
@@ -117,6 +120,40 @@ const ExamPage: React.FC = () => {
         }
     };
 
+    // Handle suspicious activity detection
+    const handleSuspiciousActivity = (alert: SuspiciousAlert) => {
+        console.warn('Suspicious activity detected:', alert);
+
+        setSuspiciousActivities(prev => [...prev, alert]);
+
+        // Auto-show alert dashboard for high severity alerts
+        if (alert.severity === 'high') {
+            setShowAlertDashboard(true);
+        }
+
+        // Log to backend for instructor monitoring
+        try {
+            // In a real implementation, you would send this to your backend
+            fetch('/api/exam/suspicious-activity', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    examId,
+                    studentId: 'current-student-id', // Get from user context
+                    alert,
+                    timestamp: Date.now()
+                })
+            }).catch(err => console.error('Failed to log suspicious activity:', err));
+        } catch (error) {
+            console.error('Error logging suspicious activity:', error);
+        }
+    };
+
+    // Handle alert dismissal
+    const handleAlertDismiss = (index: number) => {
+        setSuspiciousActivities(prev => prev.filter((_, i) => i !== index));
+    };
+
     const handleSubmitExam = () => {
         if (!exam) return;
 
@@ -195,7 +232,38 @@ const ExamPage: React.FC = () => {
                     <div className="flex items-center space-x-6">
                         <div className="flex flex-col items-center space-y-2">
 
-                            <CameraCaptureWebSocket />
+                            <CameraCaptureWebSocket
+                                onSuspiciousActivity={handleSuspiciousActivity}
+                                size={180}
+                            />
+
+                            {/* Suspicious Activity Alert Button */}
+                            {suspiciousActivities.length > 0 && (
+                                <button
+                                    onClick={() => setShowAlertDashboard(!showAlertDashboard)}
+                                    className={`mt-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${suspiciousActivities.some(a => a.severity === 'high')
+                                            ? 'bg-red-100 text-red-700 border border-red-300 animate-pulse'
+                                            : 'bg-yellow-100 text-yellow-700 border border-yellow-300'
+                                        }`}
+                                >
+                                    <div className="flex items-center space-x-2">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.864-.833-2.634 0l-6.918 7.5c-.77.833.192 2.5 1.732 2.5z" />
+                                        </svg>
+                                        <span>{suspiciousActivities.length} Alert{suspiciousActivities.length > 1 ? 's' : ''}</span>
+                                    </div>
+                                </button>
+                            )}
+
+                            {/* Alert Dashboard */}
+                            {showAlertDashboard && (
+                                <div className="absolute top-0 left-full ml-4 w-96 z-10">
+                                    <AlertDashboard
+                                        alerts={suspiciousActivities}
+                                        onAlertDismiss={handleAlertDismiss}
+                                    />
+                                </div>
+                            )}
                         </div>
                         {/* Timer */}
                         {exam.timeLimit && (

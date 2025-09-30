@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import AlertDashboard from '../../components/monitoring/AlertDashboard';
+import type { SuspiciousAlert } from '../../types/alerts';
 
 interface Student {
     id: string;
@@ -37,6 +39,31 @@ const InstructorCourseManagement: React.FC = () => {
     const { courseId } = useParams<{ courseId: string }>();
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState(0);
+    const [liveAlerts, setLiveAlerts] = useState<SuspiciousAlert[]>([]);
+
+    // Simulate receiving live alerts from students taking exams
+    useEffect(() => {
+        const interval = setInterval(() => {
+            // This would normally come from a WebSocket connection to monitor all students
+            const mockAlert: SuspiciousAlert = {
+                id: `alert-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+                type: ['no_face', 'multiple_faces', 'face_mismatch'][Math.floor(Math.random() * 3)] as 'no_face' | 'multiple_faces' | 'face_mismatch',
+                message: 'Suspicious activity detected during exam',
+                timestamp: Date.now(),
+                severity: ['low', 'medium', 'high'][Math.floor(Math.random() * 3)] as 'low' | 'medium' | 'high',
+                studentName: `Student ${Math.floor(Math.random() * 20) + 1}`,
+                studentId: `student-${Math.floor(Math.random() * 100)}`,
+            };
+
+            setLiveAlerts(prev => [mockAlert, ...prev.slice(0, 9)]); // Keep last 10 alerts
+        }, 15000); // Add new alert every 15 seconds
+
+        return () => clearInterval(interval);
+    }, []);
+
+    const handleAlertDismiss = (index: number) => {
+        setLiveAlerts(prev => prev.filter((_, i) => i !== index));
+    };
     const [loading, setLoading] = useState(true);
 
     // Mock data
@@ -149,7 +176,8 @@ const InstructorCourseManagement: React.FC = () => {
         { name: 'Course Content', icon: '📚' },
         { name: 'Students', icon: '👥' },
         { name: 'Exam Results', icon: '📊' },
-        { name: 'Screenshots', icon: '📸' }
+        { name: 'Screenshots', icon: '📸' },
+        { name: 'Live Monitoring', icon: '🚨' }
     ];
 
     if (loading) {
@@ -204,8 +232,8 @@ const InstructorCourseManagement: React.FC = () => {
                             key={tab.name}
                             onClick={() => setActiveTab(index)}
                             className={`w-full rounded-lg py-3 px-4 text-sm font-medium leading-5 transition-all duration-200 ${activeTab === index
-                                    ? 'bg-gray-800 text-white shadow-md'
-                                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-800'
+                                ? 'bg-gray-800 text-white shadow-md'
+                                : 'text-gray-600 hover:bg-gray-100 hover:text-gray-800'
                                 }`}
                         >
                             <div className="flex items-center justify-center space-x-2">
@@ -238,8 +266,8 @@ const InstructorCourseManagement: React.FC = () => {
                                         <div key={content.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors duration-200">
                                             <div className="flex items-center space-x-4">
                                                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${content.type === 'lesson' ? 'bg-blue-100 text-blue-600' :
-                                                        content.type === 'quiz' ? 'bg-orange-100 text-orange-600' :
-                                                            'bg-green-100 text-green-600'
+                                                    content.type === 'quiz' ? 'bg-orange-100 text-orange-600' :
+                                                        'bg-green-100 text-green-600'
                                                     }`}>
                                                     {content.type === 'lesson' ? '📖' : content.type === 'quiz' ? '❓' : '📝'}
                                                 </div>
@@ -316,9 +344,9 @@ const InstructorCourseManagement: React.FC = () => {
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${student.grade >= 90 ? 'bg-green-100 text-green-800' :
-                                                            student.grade >= 80 ? 'bg-blue-100 text-blue-800' :
-                                                                student.grade >= 70 ? 'bg-yellow-100 text-yellow-800' :
-                                                                    'bg-red-100 text-red-800'
+                                                        student.grade >= 80 ? 'bg-blue-100 text-blue-800' :
+                                                            student.grade >= 70 ? 'bg-yellow-100 text-yellow-800' :
+                                                                'bg-red-100 text-red-800'
                                                         }`}>
                                                         {student.grade}%
                                                     </span>
@@ -356,9 +384,9 @@ const InstructorCourseManagement: React.FC = () => {
                                                 </div>
                                                 <div className="text-right">
                                                     <div className={`text-2xl font-bold ${result.score >= 90 ? 'text-green-600' :
-                                                            result.score >= 80 ? 'text-blue-600' :
-                                                                result.score >= 70 ? 'text-yellow-600' :
-                                                                    'text-red-600'
+                                                        result.score >= 80 ? 'text-blue-600' :
+                                                            result.score >= 70 ? 'text-yellow-600' :
+                                                                'text-red-600'
                                                         }`}>
                                                         {result.score}%
                                                     </div>
@@ -417,6 +445,42 @@ const InstructorCourseManagement: React.FC = () => {
                                         </div>
                                     </div>
                                 ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Live Monitoring Panel */}
+                    {activeTab === 4 && (
+                        <div className="bg-white rounded-2xl shadow-lg border border-gray-200">
+                            <div className="p-6 border-b border-gray-200">
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <h2 className="text-xl font-bold text-gray-900">Live Exam Monitoring</h2>
+                                        <p className="text-gray-600 mt-1">Real-time suspicious activity alerts from ongoing exams</p>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                                        <span className="text-sm text-gray-600">Live</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="p-6">
+                                {liveAlerts.length > 0 ? (
+                                    <AlertDashboard
+                                        alerts={liveAlerts}
+                                        onAlertDismiss={handleAlertDismiss}
+                                    />
+                                ) : (
+                                    <div className="text-center py-12">
+                                        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                            <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </div>
+                                        <h3 className="text-lg font-medium text-gray-900 mb-2">All Clear</h3>
+                                        <p className="text-gray-600">No suspicious activities detected in ongoing exams</p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )}
