@@ -47,7 +47,7 @@ const InstructorDashboard: React.FC = () => {
     const loadDashboardData = async () => {
         try {
             setLoading(true);
-            
+
             // Mock instructor courses
             const instructorCourses = [
                 {

@@ -203,11 +203,10 @@ const InstructorCourseManagement: React.FC = () => {
                         <button
                             key={tab.name}
                             onClick={() => setActiveTab(index)}
-                            className={`w-full rounded-lg py-3 px-4 text-sm font-medium leading-5 transition-all duration-200 ${
-                                activeTab === index
+                            className={`w-full rounded-lg py-3 px-4 text-sm font-medium leading-5 transition-all duration-200 ${activeTab === index
                                     ? 'bg-gray-800 text-white shadow-md'
                                     : 'text-gray-600 hover:bg-gray-100 hover:text-gray-800'
-                            }`}
+                                }`}
                         >
                             <div className="flex items-center justify-center space-x-2">
                                 <span className="text-lg">{tab.icon}</span>
@@ -238,11 +237,10 @@ const InstructorCourseManagement: React.FC = () => {
                                     {courseContent.map((content) => (
                                         <div key={content.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors duration-200">
                                             <div className="flex items-center space-x-4">
-                                                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                                                    content.type === 'lesson' ? 'bg-blue-100 text-blue-600' :
-                                                    content.type === 'quiz' ? 'bg-orange-100 text-orange-600' :
-                                                    'bg-green-100 text-green-600'
-                                                }`}>
+                                                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${content.type === 'lesson' ? 'bg-blue-100 text-blue-600' :
+                                                        content.type === 'quiz' ? 'bg-orange-100 text-orange-600' :
+                                                            'bg-green-100 text-green-600'
+                                                    }`}>
                                                     {content.type === 'lesson' ? '📖' : content.type === 'quiz' ? '❓' : '📝'}
                                                 </div>
                                                 <div>
@@ -251,9 +249,8 @@ const InstructorCourseManagement: React.FC = () => {
                                                 </div>
                                             </div>
                                             <div className="flex items-center space-x-2">
-                                                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                                    content.status === 'published' ? 'bg-green-100 text-green-600' : 'bg-yellow-100 text-yellow-600'
-                                                }`}>
+                                                <span className={`px-2 py-1 rounded-full text-xs font-medium ${content.status === 'published' ? 'bg-green-100 text-green-600' : 'bg-yellow-100 text-yellow-600'
+                                                    }`}>
                                                     {content.status}
                                                 </span>
                                                 <button className="text-gray-400 hover:text-gray-600 transition-colors duration-200">
@@ -307,7 +304,7 @@ const InstructorCourseManagement: React.FC = () => {
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="flex items-center">
                                                         <div className="flex-1 bg-gray-200 rounded-full h-2 mr-2">
-                                                            <div 
+                                                            <div
                                                                 className="bg-gray-700 h-2 rounded-full"
                                                                 style={{ width: `${(student.completedLessons / student.totalLessons) * 100}%` }}
                                                             ></div>
@@ -318,12 +315,11 @@ const InstructorCourseManagement: React.FC = () => {
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
-                                                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                                                        student.grade >= 90 ? 'bg-green-100 text-green-800' :
-                                                        student.grade >= 80 ? 'bg-blue-100 text-blue-800' :
-                                                        student.grade >= 70 ? 'bg-yellow-100 text-yellow-800' :
-                                                        'bg-red-100 text-red-800'
-                                                    }`}>
+                                                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${student.grade >= 90 ? 'bg-green-100 text-green-800' :
+                                                            student.grade >= 80 ? 'bg-blue-100 text-blue-800' :
+                                                                student.grade >= 70 ? 'bg-yellow-100 text-yellow-800' :
+                                                                    'bg-red-100 text-red-800'
+                                                        }`}>
                                                         {student.grade}%
                                                     </span>
                                                 </td>
@@ -359,12 +355,11 @@ const InstructorCourseManagement: React.FC = () => {
                                                     <p className="text-gray-600">{result.studentName}</p>
                                                 </div>
                                                 <div className="text-right">
-                                                    <div className={`text-2xl font-bold ${
-                                                        result.score >= 90 ? 'text-green-600' :
-                                                        result.score >= 80 ? 'text-blue-600' :
-                                                        result.score >= 70 ? 'text-yellow-600' :
-                                                        'text-red-600'
-                                                    }`}>
+                                                    <div className={`text-2xl font-bold ${result.score >= 90 ? 'text-green-600' :
+                                                            result.score >= 80 ? 'text-blue-600' :
+                                                                result.score >= 70 ? 'text-yellow-600' :
+                                                                    'text-red-600'
+                                                        }`}>
                                                         {result.score}%
                                                     </div>
                                                     <p className="text-sm text-gray-500">Duration: {result.duration}</p>

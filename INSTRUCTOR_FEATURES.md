@@ -1,22 +1,26 @@
 # 🎓 ULMS Instructor Dashboard
 
 ## Overview
+
 The ULMS Instructor Dashboard provides comprehensive course management capabilities for educators, including content management, student monitoring, exam oversight, and advanced proctoring features with screenshot monitoring.
 
 ## Features
 
 ### 📊 Dashboard Overview
+
 - **Course Statistics**: Total courses, students, exams, and average grades
 - **Quick Access**: Direct navigation to course content, student management, and exam monitoring
 - **Beautiful Design**: Modern gradient-based UI with responsive design
 
 ### 📚 Course Content Management
+
 - **Content Creation**: Add lessons, quizzes, and assignments
 - **Status Tracking**: Draft and published content states
 - **Order Management**: Organize content sequence
 - **Edit Capabilities**: Modify existing course materials
 
 ### 👥 Student Management
+
 - **Enrollment Overview**: Complete list of enrolled students
 - **Progress Tracking**: Visual progress bars for lesson completion
 - **Grade Monitoring**: Color-coded grade indicators
@@ -24,12 +28,14 @@ The ULMS Instructor Dashboard provides comprehensive course management capabilit
 - **Student Details**: Access to individual student profiles
 
 ### 📊 Exam Results & Analytics
+
 - **Comprehensive Results**: Detailed exam scores and completion times
 - **Performance Metrics**: Grade distribution and analytics
 - **Duration Tracking**: Time spent on exams
 - **Historical Data**: Complete exam history per student
 
 ### 📸 Advanced Proctoring & Screenshots
+
 - **Real-time Monitoring**: Screenshot capture during exams
 - **Gallery View**: Organized screenshot display by student and exam
 - **Timestamp Tracking**: When screenshots were captured
@@ -39,15 +45,18 @@ The ULMS Instructor Dashboard provides comprehensive course management capabilit
 ## Routes
 
 ### Public Routes
+
 - `/login` - Authentication page
 
 ### Protected Instructor Routes
+
 - `/instructor/dashboard` - Main instructor dashboard
 - `/instructor/course/:courseId` - Course management interface
 
 ## Components Structure
 
 ### InstructorDashboard.tsx
+
 ```typescript
 Features:
 - Overview statistics (courses, students, exams, grades)
@@ -57,6 +66,7 @@ Features:
 ```
 
 ### InstructorCourseManagement.tsx
+
 ```typescript
 Features:
 - Tabbed interface (Content, Students, Exam Results, Screenshots)
@@ -69,6 +79,7 @@ Features:
 ## API Integration
 
 ### Expected Endpoints
+
 ```typescript
 // Course Management
 GET /api/instructor/courses
@@ -92,6 +103,7 @@ GET /api/instructor/students/:id/exam-screenshots
 ## Screenshot Monitoring System
 
 ### Features
+
 - **Automatic Capture**: Screenshots taken at regular intervals during exams
 - **Student Identification**: Screenshots linked to specific students and exams
 - **Gallery View**: Easy browsing of all screenshots
@@ -99,6 +111,7 @@ GET /api/instructor/students/:id/exam-screenshots
 - **Metadata**: Timestamp and sequence information
 
 ### Data Structure
+
 ```typescript
 interface ExamScreenshot {
   id: string;
@@ -115,6 +128,7 @@ interface ExamScreenshot {
 ## Design Features
 
 ### Visual Elements
+
 - **Gradient Backgrounds**: Modern indigo-to-purple gradients
 - **Card-based Layout**: Clean, organized information display
 - **Color-coded Status**: Intuitive status indicators
@@ -122,6 +136,7 @@ interface ExamScreenshot {
 - **Responsive Design**: Works on all device sizes
 
 ### User Experience
+
 - **Intuitive Navigation**: Clear breadcrumbs and navigation
 - **Quick Actions**: One-click access to common tasks
 - **Search & Filter**: Easy content discovery
@@ -130,6 +145,7 @@ interface ExamScreenshot {
 ## Security & Privacy
 
 ### Screenshot Monitoring
+
 - **Consent Required**: Students must agree to monitoring
 - **Secure Storage**: Encrypted screenshot storage
 - **Access Control**: Only authorized instructors can view
@@ -137,6 +153,7 @@ interface ExamScreenshot {
 - **Data Retention**: Configurable retention policies
 
 ### Academic Integrity
+
 - **Comprehensive Monitoring**: Full exam session oversight
 - **Suspicious Activity Detection**: Automated alerts for unusual behavior
 - **Evidence Collection**: Complete documentation for reviews
@@ -145,12 +162,14 @@ interface ExamScreenshot {
 ## Usage Guide
 
 ### Getting Started
+
 1. Navigate to `/instructor/dashboard` after login
 2. View course overview and statistics
 3. Click on a course to manage content and students
 4. Use tabs to switch between management areas
 
 ### Managing Course Content
+
 1. Go to course management page
 2. Select "Course Content" tab
 3. Click "Add Content" to create new materials
@@ -158,18 +177,21 @@ interface ExamScreenshot {
 5. Publish content when ready
 
 ### Monitoring Students
+
 1. Select "Students" tab in course management
 2. View progress bars and grades
 3. Click "View Details" for individual student information
 4. Track activity and engagement metrics
 
 ### Viewing Exam Results
+
 1. Navigate to "Exam Results" tab
 2. Review scores and completion times
 3. Click "View Screenshots" to see monitoring images
 4. Analyze performance patterns
 
 ### Screenshot Review
+
 1. Go to "Screenshots" tab
 2. Browse by student and exam
 3. Click images to view full size
@@ -178,16 +200,19 @@ interface ExamScreenshot {
 ## Technical Implementation
 
 ### State Management
+
 - React hooks for local state
 - Mock data for development
 - Ready for API integration
 
 ### Responsive Design
+
 - Tailwind CSS for styling
 - Mobile-first approach
 - Flexible grid layouts
 
 ### Performance
+
 - Lazy loading for screenshots
 - Optimized image delivery
 - Efficient data fetching
@@ -195,6 +220,7 @@ interface ExamScreenshot {
 ## Future Enhancements
 
 ### Planned Features
+
 - Real-time notifications
 - Advanced analytics dashboard
 - Automated grading system
@@ -203,6 +229,7 @@ interface ExamScreenshot {
 - AI-powered cheating detection
 
 ### API Integration
+
 - Real endpoint connections
 - WebSocket for real-time updates
 - File upload for content
@@ -211,12 +238,14 @@ interface ExamScreenshot {
 ## Security Considerations
 
 ### Data Protection
+
 - Encrypted data transmission
 - Secure image storage
 - Access logging
 - Regular security audits
 
 ### Privacy Compliance
+
 - Student consent management
 - Data retention policies
 - Right to erasure
