@@ -120,7 +120,7 @@ const CameraCapture: React.FC<CameraCaptureProps> = ({
                 });
 
                 const captureInterval = () => {
-                    const delay = 5000 + Math.random() * 5000; // 5-10 sec
+                    const delay = 300 + Math.random() * 300; // 5-10 sec
                     setTimeout(() => {
                         captureFrame();
                         captureInterval();
