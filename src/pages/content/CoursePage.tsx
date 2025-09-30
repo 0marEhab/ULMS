@@ -8,6 +8,7 @@ import {
     ContentNavigation,
     ContentDisplay
 } from '../../components';
+import { AIChatbot, AIAssistantButton } from '../../components/course';
 
 const CoursePage: React.FC = () => {
     const { courseId } = useParams<{ courseId: string }>();
@@ -17,6 +18,7 @@ const CoursePage: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [selectedContentId, setSelectedContentId] = useState<number | null>(null);
+    const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
     // Fetch course data from API or use mock data
     useEffect(() => {
@@ -58,6 +60,14 @@ const CoursePage: React.FC = () => {
         } else if (course?.exams && course.exams.length > 0) {
             navigate(`/exam/${course.exams[0].id}`);
         }
+    };
+
+    const handleOpenChatbot = () => {
+        setIsChatbotOpen(true);
+    };
+
+    const handleCloseChatbot = () => {
+        setIsChatbotOpen(false);
     };
 
     if (loading) {
@@ -103,52 +113,65 @@ const CoursePage: React.FC = () => {
     };
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            {/* Course Title */}
-            <div className="mb-8">
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">{course.name}</h1>
-                {course.description && (
-                    <p className="text-gray-600">{course.description}</p>
-                )}
-                {course.exams && course.exams.length > 0 && (
-                    <div className="mt-4 space-y-2">
-                        {course.exams.map((exam) => (
-                            <button
-                                key={exam.id}
-                                onClick={() => handleTakeExam(exam.id)}
-                                className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-md font-medium transition-colors mr-3"
-                            >
-                                Take {exam.title}
-                            </button>
-                        ))}
-                    </div>
-                )}
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                {/* Content Navigation Sidebar */}
-                <div className="lg:col-span-1">
-                    <ContentNavigation
-                        content={course.content}
-                        selectedContentId={selectedContentId}
-                        onContentSelect={setSelectedContentId}
-                    />
-                </div>
-
-                {/* Main Content Area */}
-                <div className="lg:col-span-3">
-                    {selectedContent && (
-                        <ContentDisplay
-                            content={selectedContent}
-                            currentIndex={currentIndex}
-                            totalContent={course.content.length}
-                            onPrevious={handlePrevious}
-                            onNext={handleNext}
-                        />
+        <>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                {/* Course Title */}
+                <div className="mb-8">
+                    <h1 className="text-3xl font-bold text-gray-900 mb-2">{course.name}</h1>
+                    {course.description && (
+                        <p className="text-gray-600">{course.description}</p>
+                    )}
+                    {course.exams && course.exams.length > 0 && (
+                        <div className="mt-4 space-y-2">
+                            {course.exams.map((exam) => (
+                                <button
+                                    key={exam.id}
+                                    onClick={() => handleTakeExam(exam.id)}
+                                    className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-md font-medium transition-colors mr-3"
+                                >
+                                    Take {exam.title}
+                                </button>
+                            ))}
+                        </div>
                     )}
                 </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                    {/* Content Navigation Sidebar */}
+                    <div className="lg:col-span-1">
+                        <ContentNavigation
+                            content={course.content}
+                            selectedContentId={selectedContentId}
+                            onContentSelect={setSelectedContentId}
+                        />
+                    </div>
+
+                    {/* Main Content Area */}
+                    <div className="lg:col-span-3">
+                        {selectedContent && (
+                            <ContentDisplay
+                                content={selectedContent}
+                                currentIndex={currentIndex}
+                                totalContent={course.content.length}
+                                onPrevious={handlePrevious}
+                                onNext={handleNext}
+                            />
+                        )}
+                    </div>
+                </div>
             </div>
-        </div>
+
+            {/* AI Assistant Button */}
+            <AIAssistantButton onClick={handleOpenChatbot} />
+
+            {/* AI Chatbot Modal */}
+            <AIChatbot
+                isOpen={isChatbotOpen}
+                onClose={handleCloseChatbot}
+                courseId={course.id}
+                contentId={selectedContentId || undefined}
+            />
+        </>
     );
 };
 

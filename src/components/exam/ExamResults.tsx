@@ -85,7 +85,7 @@ const ExamResults: React.FC<ExamResultsProps> = ({
                                 <div key={question.id} className="border rounded-lg p-4">
                                     <div className="flex items-start justify-between mb-3">
                                         <h4 className="font-medium text-gray-900">
-                                            {index + 1}. {question.question}
+                                            {index + 1}. {question.context}
                                         </h4>
                                         <span className={`px-2 py-1 rounded text-xs font-medium ${isCorrect ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                                             }`}>
@@ -95,7 +95,7 @@ const ExamResults: React.FC<ExamResultsProps> = ({
 
                                     <div className="space-y-2">
                                         {question.choices.map((choice, choiceIndex) => {
-                                            const isCorrectAnswer = choiceIndex === question.correctAnswer;
+                                            const isCorrectAnswer = choiceIndex === question.answer;
                                             const isSelectedAnswer = selectedChoice === choiceIndex;
 
                                             let choiceClass = 'p-2 rounded text-sm ';
