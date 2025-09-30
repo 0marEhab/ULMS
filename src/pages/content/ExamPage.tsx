@@ -184,7 +184,7 @@ const ExamPage: React.FC = () => {
 
     return (
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <CameraCaptureWebSocket />
+
             {/* Exam Header with Camera */}
             <div className="mb-8">
                 <div className="flex items-start justify-between">
@@ -194,8 +194,12 @@ const ExamPage: React.FC = () => {
                     </div>
 
                     <div className="flex items-center space-x-6">
-                        {/* Camera Component */}
                         <div className="flex flex-col items-center space-y-2">
+
+                            <CameraCaptureWebSocket />
+                        </div>
+                        {/* Camera Component */}
+                        {/* <div className="flex flex-col items-center space-y-2">
                             <CameraCanvas
                                 size={120}
                                 onCameraReady={(stream) => {
@@ -222,7 +226,7 @@ const ExamPage: React.FC = () => {
                                     {cameraError}
                                 </span>
                             )}
-                        </div>
+                        </div> */}
 
                         {/* Timer */}
                         {exam.timeLimit && (
